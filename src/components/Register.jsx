@@ -1,6 +1,18 @@
 import "../styles/index.css";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from 'yup'
 function Register() {
+    const registrationSchema = yup.object({
+        name: yup.string().required("Name is required"),
+        email: yup.string().email("Invalid email address").required("Email is required"),
+        password: yup.string().required("Password is required").min(8, "Password is too short")
+    })
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registrationSchema) })
+    console.log(errors)
+    const handleRegister = (formData) => {
+        console.log(formData, errors)
+    }
     return (
         <>
             <div className="">
@@ -15,22 +27,37 @@ function Register() {
                     <div className="basis-2/3">
                         <div className="h-screen flex flex-col items-center justify-center">
                             <h1 className="text-5xl text-teal-400 font-bold mb-16">Create Account</h1>
-                            <input
-                                placeholder="Name"
-                                className="bg-gray-100 mb-3 w-96 p-3"
-                                id="name"
-                            />
-                            <input
-                                placeholder="Email"
-                                className="bg-gray-100 mb-3 w-96 p-3"
-                                id="email"
-                            />
-                            <input
-                                placeholder="Password"
-                                className="bg-gray-100 mb-3 w-96 p-3"
-                                id="password"
-                            />
-                            <button className="border rounded-full bg-teal-400 px-14 py-2 text-white mt-10">SIGN UP</button>
+                            <div className="flex flex-col mb-3">
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    className={`bg-gray-100 w-96 p-3 ${errors.name ? "border border-red-400" : ""}`}
+                                    id="name"
+                                    {...register('name')}
+                                />
+                                {errors.name && <span id="name-error" className="text-red-400">{errors.name.message}</span>}
+                            </div>
+                            <div className="flex flex-col mb-3">
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    className={`bg-gray-100 w-96 p-3 ${errors.email ? "border border-red-400" : ""}`}
+                                    id="email"
+                                    {...register('email')}
+                                />
+                                {errors.email && <span id="email-error" className="text-red-400">{errors.email.message}</span>}
+                            </div>
+                            <div className="flex flex-col mb-3">
+                                <input
+                                    type="password"
+                                    placeholder="Password"
+                                    className={`bg-gray-100 w-96 p-3 ${errors.password ? "border border-red-400" : ""}`}
+                                    id="password"
+                                    {...register('password')}
+                                />
+                                {errors.password && <span id="password-error" className="text-red-400">{errors.password.message}</span>}
+                            </div>
+                            <button className="border rounded-full bg-teal-400 px-14 py-2 text-white mt-10" onClick={handleSubmit(handleRegister)}>SIGN UP</button>
                         </div>
                     </div>
                 </div>
