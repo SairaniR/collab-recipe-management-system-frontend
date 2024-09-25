@@ -1,17 +1,35 @@
 import "../styles/index.css";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup'
+import appService from "../services/AppService.js";
+import Notify from "./Notify.jsx";
 function Register() {
+
     const registrationSchema = yup.object({
         name: yup.string().required("Name is required"),
         email: yup.string().email("Invalid email address").required("Email is required"),
         password: yup.string().required("Password is required").min(8, "Password is too short")
     })
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registrationSchema) })
-    console.log(errors)
+    const [type,setType]= useState("");
+    const [message,setMessage]= useState("")
     const handleRegister = (formData) => {
-        console.log(formData, errors)
+        if (JSON.stringify(errors) === '{}') {
+            const user = { name: formData.name, email: formData.email, password: formData.password }
+            appService.createUser(user).then((response) => {
+                console.log(response.data.message)
+                setType('success')
+                setMessage(response.data.message)
+            }).catch((error) => {
+                setType('error')
+                setMessage(error.response.data.message)
+                console.log(error.response.data.message)
+            }).finally(() => {
+
+            })
+        }
     }
     return (
         <>
@@ -27,6 +45,10 @@ function Register() {
                     <div className="basis-2/3">
                         <div className="h-screen flex flex-col items-center justify-center">
                             <h1 className="text-5xl text-teal-400 font-bold mb-16">Create Account</h1>
+                            <div className="w-96">
+                            {type && message && <Notify type={type} message={message}></Notify>}
+                            </div>
+
                             <div className="flex flex-col mb-3">
                                 <input
                                     type="text"
