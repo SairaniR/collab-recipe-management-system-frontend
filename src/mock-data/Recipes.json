@@ -1,0 +1,34 @@
+[
+  {
+    "id":4,
+    "image": "/assets/images/Biriyani.jpg",
+    "name": "Chicken biriyani",
+    "duration": "1:00:00",
+    "creator": "Mithun M",
+    "type": "NV"
+  },
+  {
+    "id":1,
+    "image": "/assets/images/Biriyani.jpg",
+    "name": "Chicken biriyani",
+    "duration": "1:00:00",
+    "creator": "Mithun M",
+    "type": "V"
+  },
+  {
+    "id":2,
+    "image": "/assets/images/Biriyani.jpg",
+    "name": "Chicken biriyani",
+    "duration": "1:00:00",
+    "creator": "Mithun M",
+    "type": "E"
+  },
+  {
+    "id":3,
+    "image": "/assets/images/Biriyani.jpg",
+    "name": "Chicken biriyani",
+    "duration": "1:00:00",
+    "creator": "Mithun M",
+    "type": "NV"
+  }
+]
